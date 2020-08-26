@@ -10,6 +10,7 @@ import '../styles/register.css';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { useAuth } from '../providers/Auth';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons/lib';
 
 const { Title } = Typography;
 
@@ -111,7 +112,9 @@ const Register = () => {
                        ] }
                        hasFeedback
             >
-              <Input.Password prefix={ <LockOutlined /> } placeholder='Clave' />
+              <Input.Password prefix={ <LockOutlined /> }
+                              iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                              placeholder='Clave' />
             </Form.Item>
 
             <Form.Item name='password_confirmation'
@@ -133,6 +136,7 @@ const Register = () => {
                        ] }
             >
               <Input.Password prefix={ <LockOutlined /> }
+                              iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                               placeholder='Confirma tu clave' />
             </Form.Item>
 
