@@ -2,7 +2,7 @@ import React from 'react';
 import Routes from '../constants/routes';
 import { useAuth } from '../providers/Auth';
 import { Checkbox, Col, Form, Input, Row, Button, message } from 'antd';
-import { LockOutlined, UserOutlined } from '@ant-design/icons/lib';
+import { LockOutlined, UserOutlined, EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icons/lib';
 import API from '../data';
 import withoutAuth from '../hocs/withoutAuth';
 import Cookies from 'js-cookie';
@@ -78,9 +78,9 @@ const Login = () => {
                   }
                 ] }
               >
-                <Input
+                <Input.Password
                   prefix={ <LockOutlined className='site-form-item-icon' /> }
-                  type='password'
+                  iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                   placeholder='Password' autoComplete='password'
                 />
               </Form.Item>
