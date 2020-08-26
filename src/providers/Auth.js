@@ -10,6 +10,8 @@ import Cookies from 'js-cookie';
  * considerarse “globales” para un árbol de componentes en React
  * Este contexto sirve para pasar la información de la sesión del usuario
  *
+ * https://es.reactjs.org/docs/context.html
+ *
  * @type {React.Context<{setAuthenticated: setAuthenticated, isAuthenticated: boolean}>}
  */
 const AuthContext = React.createContext( {
@@ -20,7 +22,7 @@ const AuthContext = React.createContext( {
 
 /**
  * El provider del contexto expone las siguientes variables que pueden ser usadas
- * por los compoenentes que consumen este contexto
+ * por los componentes que consumen este contexto
  *
  *  - isAuthenticated,
  *  - isCheckingAuth,

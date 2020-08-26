@@ -5,6 +5,7 @@
 export const translateMessage = ( type, params = {} ) => {
 
   const messageList = {
+    'invalid_credentials': 'Usuario o clave incorrectos',
     'The given data was invalid.': 'Datos no válidos',
     'token_expired': 'Tu sesión ha expirado',
     'PERMISSION_DENIED': 'No tienes permiso para realizar esta acción',

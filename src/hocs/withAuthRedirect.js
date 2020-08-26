@@ -33,8 +33,6 @@ export default function withAuthRedirect( {
       return <LoadingComponent />;
     }
     if( expectedAuth !== isAuthenticated ) {
-      console.log( 'OOOUUTTTTTTTTTTTTT', location );
-
       return <Redirect to={ {
         pathname: location || Routes.LOGIN,
         state: { from: props.location }

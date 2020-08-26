@@ -25,7 +25,7 @@ const ArticleList = ( props ) => {
     if( isLoading ) {
       return <Row justify='center' gutter={ 30 }>
         {
-          [ ...new Array( 10 ) ].map( ( _, i ) =>
+          [ ...new Array( 9 ) ].map( ( _, i ) =>
             <Col xs={ 24 } sm={ 12 } md={ 8 } style={ { marginBottom: 30 } } key={ i }>
               <div style={ { textAlign: 'center' } }>
                 <Skeleton.Image style={ { width: 200 } } />
