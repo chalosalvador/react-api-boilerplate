@@ -14,6 +14,15 @@ const Header = Layout.Header;
 const Content = Layout.Content;
 const Footer = Layout.Footer;
 
+/**
+ * Este componente renderiza los elementos comunes para toda la aplicación
+ *
+ * Header (menu), Content y Footer
+ *
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const MainLayout = props => {
   console.log( 'props', props );
   return (
@@ -25,9 +34,7 @@ const MainLayout = props => {
               <Row type='flex' justify='space-between' align='bottom'>
                 <Col xs={ 24 } md={ 6 } className='logo-wrapper'>
                   <a href={ process.env.REACT_APP_DOMAIN }>
-                    <img className='logo'
-                         src={ logo }
-                         alt='Grupo Menta' /></a>
+                    <img className='logo' src={ logo } alt='Grupo Menta' /></a>
                 </Col>
 
                 <Col md={ 14 } align='right' className='main-menu'>

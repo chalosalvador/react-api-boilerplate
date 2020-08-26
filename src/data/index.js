@@ -5,82 +5,79 @@ import Cookies from 'js-cookie';
 import Routes from '../constants/routes';
 import history from '../utils/history';
 
-const baseURL = 'http://localhost:8000/api'; // todo move to .env
+const baseURL = process.env.REACT_APP_API_HOST; // todo move to .env
 let headers = { 'Accept': 'application/json' };
 
+/**
+ * Este es el método principal que establece las cabeceras y los datos que
+ * deben viajar con la petición, verifica si existe una sesión activa e incluye
+ * o elimina la cabecera “Authorization” junto con el JWT. De igual manera establece
+ * las validaciones de las respuestas del servidor y devuelve una respuesta en el
+ * mismo formato para todas las peticiones o los mensajes de error correspondientes.
+ *
+ * @param endpoint
+ * @param method
+ * @param params
+ * @returns {Promise<{data: *, status: number}|*|{data, status: number}>}
+ */
 const handleRequest = async( endpoint, method, params = null ) => {
-    if( !API.headers[ 'Authorization' ] ) {
-      API.headers[ 'Authorization' ] = `Bearer ${ Cookies.get( 'token' ) }`;
-    }
-    const requestData = { method };
-
-    if( params !== null ) {
-      if( params instanceof FormData ) {
-        requestData[ 'body' ] = params;
-        delete headers[ 'Content-Type' ];
-      } else {
-        requestData[ 'body' ] = JSON.stringify( params );
-        headers[ 'Content-Type' ] = 'application/json';
-      }
-    }
-
-    requestData[ 'headers' ] = headers;
-    console.log( 'requestData', requestData );
-    const response = await fetch( `${ baseURL }${ endpoint }`, requestData );
-    let jsonResponse = {};
-
-    try {
-      jsonResponse = await response.json();
-      console.log( 'jsonResponse', jsonResponse );
-
-      if( response.status === 401 ) {
-        // REFRESH TOKEN AND TRY AGAIN
-        console.log( 'jsonResponse 401', jsonResponse );
-        console.log( 'COOKIEEEEEEEE', Cookies.get( 'token' ) );
-        if( jsonResponse.refreshed_token ) {
-          console.log( 'REFRESH TOKEN' );
-          API.headers[ 'Authorization' ] = 'Bearer ' + jsonResponse.refreshed_token; // start sending authorization
-                                                                                     // header
-          console.log( 'API.headers', API.headers );
-          Cookies.set( 'token', jsonResponse.refreshed_token, { expires: 1 } );
-
-          return await handleRequest( endpoint, method, params );
-        } else {
-          history.push( Routes.LOGOUT );
-          return Promise.reject( {
-            message: jsonResponse.message,
-            error: jsonResponse.error || jsonResponse.errors,
-            status: response.status
-          } );
-        }
-      }
-    } catch( e ) {
-      console.log( 'NO BODY', JSON.stringify( e ) );
-    }
-    // console.log( 'jsonresponse', jsonResponse );
-
-    if( !response.ok ) {
-      return Promise.reject( {
-        message: jsonResponse.message,
-        error: jsonResponse.error || jsonResponse.errors,
-        status: response.status
-      } );
-    }
-
-
-    const result = {
-      status: response.status,
-      data: jsonResponse.data || jsonResponse
-    };
-    // console.log( 'resilt', result );
-    return result;
-    // return {
-    //   status: response.status,
-    //   jsonResponse
-    // };
-
+  if( !API.headers[ 'Authorization' ] ) {
+    API.headers[ 'Authorization' ] = `Bearer ${ Cookies.get( 'token' ) }`;
   }
-;
+  const requestData = { method };
+
+  if( params !== null ) {
+    if( params instanceof FormData ) {
+      requestData[ 'body' ] = params;
+      delete headers[ 'Content-Type' ];
+    } else {
+      requestData[ 'body' ] = JSON.stringify( params );
+      headers[ 'Content-Type' ] = 'application/json';
+    }
+  }
+
+  requestData[ 'headers' ] = headers;
+  console.log( 'requestData', requestData );
+  const response = await fetch( `${ baseURL }${ endpoint }`, requestData );
+  let jsonResponse = {};
+
+  try {
+    jsonResponse = await response.json();
+
+    if( response.status === 401 ) {
+      // REFRESH TOKEN AND TRY AGAIN
+      console.log( 'STATUS 401', jsonResponse );
+      if( jsonResponse.refreshed_token ) {
+        console.log( 'jsonResponse.refreshed_token', jsonResponse.refreshed_token );
+        API.headers[ 'Authorization' ] = 'Bearer ' + jsonResponse.refreshed_token; // start sending authorization
+                                                                                   // header
+        return await handleRequest( endpoint, method, params );
+      } else {
+        history.push( Routes.LOGOUT );
+        return Promise.reject( {
+          message: jsonResponse.message,
+          error: jsonResponse.error || jsonResponse.errors,
+          status: response.status
+        } );
+      }
+    }
+  } catch( e ) {
+    console.log( 'NO BODY', JSON.stringify( e ) );
+  }
+
+  if( !response.ok ) {
+    return Promise.reject( {
+      message: jsonResponse.message,
+      error: jsonResponse.error || jsonResponse.errors,
+      status: response.status
+    } );
+  }
+
+  return {
+    status: response.status,
+    data: jsonResponse.data || jsonResponse
+  };
+};
 
 const post = ( endpoint, params = null ) => {
   return handleRequest( endpoint, 'POST', params );
@@ -103,10 +100,7 @@ const deleteMethod = ( endpoint ) => {
 };
 
 const fetcher = async( ...args ) => {
-  const res = await get( ...args );
-
-  console.log( 'res', res );
-  return res;
+  return await get( ...args );
 };
 
 const create = ( config ) => {
@@ -120,7 +114,6 @@ const create = ( config ) => {
     ...config
   };
 };
-
 
 const API = create(
   {

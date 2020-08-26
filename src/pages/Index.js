@@ -9,17 +9,11 @@ const HomePage = () => {
   return (
     <>
       <h1 className='page-title'>
-        <a href='https://nextjs.org'>Next.js!</a> boilerplate
-        with <a href='https://ant.design/docs/react/introduce'>Antd</a>
+        <a href='https://es.reactjs.org/'>React</a> boilerplate
+        con <a href='https://ant.design/docs/react/introduce'>Antd</a>
       </h1>
 
-      <p>
-        Este es el contenido de la página principal.
-      </p>
-
-      <p>
-        Empieza editando el código de <code>pages/index.js</code>
-      </p>
+      <p>Este es el contenido de la página principal.</p>
 
       <h2>Lista de Artículos</h2>
       {

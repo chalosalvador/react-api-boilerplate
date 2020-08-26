@@ -4,11 +4,7 @@
 import useSWR from 'swr';
 import API from './index';
 
-export const useArticle = ( id, options= {refreshInterval:0, revalidateOnFocus:false} ) => {
-  console.log( 'API.headers useArticle', API.headers );
-  console.log( 'ID useArticle', id );
-  console.log( 'initialData useArticle', options );
-
+export const useArticle = ( id, options= {} ) => {
   const { data, error } = useSWR( `/articles/${ id }`, API.fetcher, options );
 
   return {
